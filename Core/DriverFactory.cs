@@ -9,13 +9,14 @@ namespace TestRail.Core
 {
     public class DriverFactory
     {
+
         public IWebDriver GetChromeDriver()
         {
             var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArgument("--incognito");
-            chromeOptions.AddArgument("--remote-debugging-pipe");
-            chromeOptions.AddArgument("--headless");
-            chromeOptions.AddArgument("disable-extensions");
+           // chromeOptions.AddArgument("--incognito");
+            //chromeOptions.AddArgument("--remote-debugging-pipe");
+           // chromeOptions.AddArgument("--headless");
+           // chromeOptions.AddArgument("disable-extensions");
 
             new DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
 
