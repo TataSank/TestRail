@@ -7,7 +7,9 @@ namespace TestRail.Core
     {
         public IWebDriver Driver;
         public Browser()
+
         {
+           
             Driver = Configurator.ReadConfiguration().BrowserType.ToLower() switch
             {
                 "chrome" => new DriverFactory().GetChromeDriver(),

@@ -2,7 +2,7 @@
 
 namespace TestRail.Tests
 {
-    internal class LoggerTest:BaseTest
+    public class LoggerTest:BaseTest
     {
         public Logger logger = LogManager.GetCurrentClassLogger();
 

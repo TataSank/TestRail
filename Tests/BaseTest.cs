@@ -11,12 +11,16 @@ namespace TestRail.Tests
     public class BaseTest
     {
         public IWebDriver? Driver { get; set; }
+        public WaitsHelper WaitsHelper { get; set; }
 
         [SetUp]
         public void SetUp()
         {
             Driver = new Browser().Driver;
+
+            WaitsHelper =new WaitsHelper(Driver,TimeSpan.FromSeconds(Configurator.ReadConfiguration().TimeOut));
             Driver.Navigate().GoToUrl(Configurator.ReadConfiguration().Url);
+            WaitsHelper =new WaitsHelper(Driver,TimeSpan.FromSeconds(Configurator.ReadConfiguration().TimeOut));
         }
         [TearDown]
         public void CloseBrowser()

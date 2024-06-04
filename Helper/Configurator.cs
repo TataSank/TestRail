@@ -10,7 +10,9 @@ namespace TestRail.Helper
         {
             var appSettingsPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "appsettings.json");
             var appSettingsReadFile = File.ReadAllText(appSettingsPath);
+
             return JsonConvert.DeserializeObject<AppSettings>(appSettingsReadFile) ?? throw new FileNotFoundException();
         }
+
     }
 }
