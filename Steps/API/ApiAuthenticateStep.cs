@@ -1,15 +1,15 @@
-﻿using RestSharp.Authenticators;
+﻿using NLog;
+using RestSharp.Authenticators;
 using RestSharp;
 using TestRail.Helper;
-using NLog;
 
-namespace TestRail.Pages
+namespace TestRail.Steps.API
 {
-    public class ApiAuthenticateTest
+    public class ApiAuthenticateStep
     {
         public static Logger logger = LogManager.GetCurrentClassLogger();
         protected RestClient client;
-        
+
         public void Authenticate()
         {
             try
@@ -32,3 +32,4 @@ namespace TestRail.Pages
         }
     }
 }
+

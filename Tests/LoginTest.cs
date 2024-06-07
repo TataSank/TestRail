@@ -12,49 +12,78 @@ namespace TestRail.Tests
 
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        
+        private static LoginPage loginPage;
         [SetUp]
-        public void Setup()
-        {
-            
+        public void SetUp()
+        { 
+           loginPage = new LoginPage(Driver);
+        }
+       
+        [Test]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Smoke Test", "Login")]
+        [AllureDescription("User can login")]
+        [AllureStep("User has successfully logged in")]
+        public void LoginPositiveTest()
+
+        {                     
+            UserStep.SuccessfullLogin(Configurator.ReadConfiguration().UserName, Configurator.ReadConfiguration().Password);
         }
 
         [Test]
         [AllureSeverity(SeverityLevel.critical)]
         [AllureTag("Smoke Test", "Login")]
-        [AllureDescription("This test checks positive and negative cases for logining")]
-        [AllureStep]
-        public void LoginPositiveTest()
-
-        {
-            var loginPage = new LoginPage(Driver);
-           
-
-            loginPage.Login(Configurator.ReadConfiguration().UserName, Configurator.ReadConfiguration().Password);
-
-           // Assert.That(dashboard.ShoppingCart().Displayed, Is.True, "User is not login in ");
-        }
-        [Test]
+        [AllureDescription("Check that user can't without password")]
+        [AllureStep("User has not logged in without password")]
         public void LoginWithoutPasswordTest()
         {
-            var loginPage = new LoginPage(Driver);
+           
             var expectedErrorMessage = "Password is required.";
-            loginPage.UserNameField().SendKeys(Configurator.ReadConfiguration().UserName);
-            loginPage.SubmitButton().Click();
-            var actualErrorMessage = Driver.FindElement(By.ClassName("loginpage-message-image")).Text;
+            UserStep.UnsuccessfullLoginWithoutPassword(Configurator.ReadConfiguration().UserName);
 
-            Assert.That(actualErrorMessage, Is.EqualTo(expectedErrorMessage));
+            var actualErrorMessage = loginPage.GetPasswordEmptyErrorMessage();        
+           
+            Assert.That(actualErrorMessage, Does.Contain(expectedErrorMessage));
         }
         [Test]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureTag("Smoke Test", "Login")]
+        [AllureDescription("Check that user can't login without User Name")]
+        [AllureStep("User has not logged in without username")]
         public void LoginWithoutUserNameTest()
         {
-            var loginPage = new LoginPage(Driver);
+            
             var expectedErrorMessage = "Email/Login is required.";
-            loginPage.UserPasswordField().SendKeys(Configurator.ReadConfiguration().Password);
-            loginPage.SubmitButton().Click();
-            var actualErrorMessage = Driver.FindElement(By.ClassName("loginpage-message-image")).Text;
-            Thread.Sleep(3000);
-            Assert.That(actualErrorMessage, Is.EqualTo(expectedErrorMessage));
+            UserStep.UnsuccessfullLoginWithoutUsername(Configurator.ReadConfiguration().Password);
+
+            var actualErrorMessage = loginPage.GetUsernameEmptyErrorMessage();
+
+            Assert.That(actualErrorMessage, Does.Contain(expectedErrorMessage));
         }
+        [Test]
+        [AllureSeverity(SeverityLevel.minor)]
+        [AllureTag("Smoke Test", "Login")]
+        [AllureDescription("Check that user can't login without User Name")]
+        [AllureStep("User has not logged in without username")]
+        public void LoginWithoutUserNameAndPasswordTest()
+        {
+
+            var expectedUserNameErrorMessage = "Email/Login is required.";
+            var expectedPasswordErrorMessage = "Password is required.";
+
+            UserStep.UnsuccessfullLoginWithoutPasswordAndUserNmae();
+
+            var actualErrorMessage = loginPage.GetLoginErrorMessage();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualErrorMessage, Does.Contain(expectedUserNameErrorMessage));
+                Assert.That(actualErrorMessage, Does.Contain(expectedPasswordErrorMessage));
+            });
+                
+            
+        }
+
     }
+
 }

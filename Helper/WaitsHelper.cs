@@ -10,14 +10,18 @@ namespace TestRail.Helper
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private IWebDriver Driver { get; set; }
         private WebDriverWait _wait;
-
         private TimeSpan _timeout { get; set; }
-        public WaitsHelper(IWebDriver driver, TimeSpan timeout)
+        public WaitsHelper(IWebDriver driver)
         {
              Driver = driver;
-            _timeout = timeout;
-            _wait = new WebDriverWait(driver, timeout);
+            _timeout = TimeSpan.FromSeconds(Configurator.ReadConfiguration().TimeOut);
+            _wait = new WebDriverWait(driver, _timeout);
         }
+
+        //public WaitsHelper(IWebDriver driver)
+        //{
+        //    Driver = driver;
+        //}
 
         public IWebElement WaitForExists(By locator )
         {
@@ -42,6 +46,11 @@ namespace TestRail.Helper
                 logger.Error(ex, $"Element is not diaplyed after timeout {_timeout} seconds");
                 throw new WebDriverTimeoutException($"Element is not diaplyed after timeout {_timeout} seconds");               
             }       
+        }
+
+        public IReadOnlyCollection<IWebElement> WaitForElementsPresence(By locator)
+        {
+            return _wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(locator));
         }
     }
 }

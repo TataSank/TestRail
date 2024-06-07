@@ -4,6 +4,7 @@ using Allure.Net.Commons;
 using System.Reflection;
 using TestRail.Core;
 using TestRail.Helper;
+using TestRail.Steps.UI;
 
 namespace TestRail.Tests
 {
@@ -12,15 +13,23 @@ namespace TestRail.Tests
     {
         public IWebDriver? Driver { get; set; }
         public WaitsHelper WaitsHelper { get; set; }
+        public UserStep UserStep { get; set; }
 
         [SetUp]
         public void SetUp()
         {
             Driver = new Browser().Driver;
+            //Steps
 
-            WaitsHelper =new WaitsHelper(Driver,TimeSpan.FromSeconds(Configurator.ReadConfiguration().TimeOut));
+            UserStep = new UserStep(Driver);
+
+            WaitsHelper =new WaitsHelper(Driver);
+
+
             Driver.Navigate().GoToUrl(Configurator.ReadConfiguration().Url);
-            WaitsHelper =new WaitsHelper(Driver,TimeSpan.FromSeconds(Configurator.ReadConfiguration().TimeOut));
+            
+
+            //Pages
         }
         [TearDown]
         public void CloseBrowser()
