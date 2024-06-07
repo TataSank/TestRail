@@ -4,12 +4,12 @@ using RestSharp;
 using System.Net;
 using TestRail.Helper;
 using TestRail.Models;
-using TestRail.Pages;
+using TestRail.Steps.API;
 
 namespace TestRail.Tests
 {
     [AllureNUnit]
-    public class ApiAddProjectTest : ApiAuthenticateTest
+    public class ApiAddProjectTest : ApiAuthenticateStep
     {
         private const string ApiEndpoint = "index.php?/api/v2/add_project";
         

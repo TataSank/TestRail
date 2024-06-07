@@ -17,7 +17,7 @@ namespace TestRail.Elements
         { 
             _driver = driver;
             _actions = new Actions(driver);
-            waitsHelper = new WaitsHelper(driver, TimeSpan.FromSeconds(Configurator.ReadConfiguration().TimeOut));  
+            waitsHelper = new WaitsHelper(driver);  
         } 
         public UiElement(IWebDriver driver, By locator) : this(driver)
         { 
@@ -33,8 +33,7 @@ namespace TestRail.Elements
     
         public string TagName => _element.TagName;
 
-        public string Text { get; }
-
+        
         public bool Enabled => _element.Enabled;
 
         public bool Selected => _element.Selected;
@@ -137,6 +136,28 @@ namespace TestRail.Elements
                 _element.SendKeys(Keys.Enter);
             }
 
+        }
+
+        public string Text
+        {
+            get
+            {
+                try
+                {
+                    if (_element.Displayed && _element.Enabled)
+                    {
+                        return _element.Text;
+                    }
+                    else
+                    {
+                        throw new ElementNotVisibleException("Element is not visible.");
+                    }
+                }
+                catch (NoSuchElementException)
+                {
+                    throw new NoSuchElementException("Element not found.");
+                }
+            }
         }
     }
 }
