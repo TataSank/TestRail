@@ -5,6 +5,8 @@ using System.Reflection;
 using TestRail.Core;
 using TestRail.Helper;
 using TestRail.Steps.UI;
+using TestRail.Steps.API;
+using TestRail.Pages;
 
 namespace TestRail.Tests
 {
@@ -12,24 +14,27 @@ namespace TestRail.Tests
     public class BaseTest
     {
         public IWebDriver? Driver { get; set; }
+        public ApiUserStep ApiUserStep { get; private set; }
         public WaitsHelper WaitsHelper { get; set; }
         public UserStep UserStep { get; set; }
+        public ProjectsPage ProjectPage { get; set; }
+        public NavigationStep Navigation { get; set; }
+        public ApiAuthenticateStep ApiAuthenticate { get; set; }
 
         [SetUp]
         public void SetUp()
         {
-            Driver = new Browser().Driver;
+          Driver = new Browser().Driver;
             //Steps
-
+            ApiAuthenticate = new ApiAuthenticateStep();    
+            ApiUserStep = new ApiUserStep();
             UserStep = new UserStep(Driver);
-
+            Navigation = new NavigationStep(Driver);
             WaitsHelper =new WaitsHelper(Driver);
-
-
-            Driver.Navigate().GoToUrl(Configurator.ReadConfiguration().Url);
             
-
+                          
             //Pages
+            ProjectPage =  new ProjectsPage(Driver);
         }
         [TearDown]
         public void CloseBrowser()
@@ -39,5 +44,4 @@ namespace TestRail.Tests
             Driver.Quit();
         }
     }
-
 }

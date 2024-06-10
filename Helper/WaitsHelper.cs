@@ -18,11 +18,6 @@ namespace TestRail.Helper
             _wait = new WebDriverWait(driver, _timeout);
         }
 
-        //public WaitsHelper(IWebDriver driver)
-        //{
-        //    Driver = driver;
-        //}
-
         public IWebElement WaitForExists(By locator )
         {
             return _wait.Until(ExpectedConditions.ElementExists(locator));

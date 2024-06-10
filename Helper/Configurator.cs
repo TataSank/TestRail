@@ -13,6 +13,5 @@ namespace TestRail.Helper
 
             return JsonConvert.DeserializeObject<AppSettings>(appSettingsReadFile) ?? throw new FileNotFoundException();
         }
-
     }
 }
