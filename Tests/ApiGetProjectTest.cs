@@ -1,29 +1,36 @@
 ﻿using Allure.Net.Commons;
 using Allure.NUnit.Attributes;
-using NUnit.Framework.Internal;
-using RestSharp;
-using System.Net;
-using TestRail.Pages;
+using NLog;
+using TestRail.Helper;
+using TestRail.Models;
+using TestRail.Steps.API;
+
 
 namespace TestRail.Tests
 {
-    public class ApiGetProjectTest : ApiAuthenticateTest
+    public class ApiGetProjectTest : BaseTest
     {
+        private ProjectModel projectData;
+        private ProjectModel _projectData;
+        public readonly JsonHelper jsonHelper = new JsonHelper();
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        [SetUp]
+        public void Setup()
+        {
+            projectData = new ProjectModel();
+            _projectData = jsonHelper.FromJson<ProjectModel>(@"Resources/GetProject.json");
+        }
         [Test]
         [AllureSeverity(SeverityLevel.critical)]
-        [AllureTag("Smoke Test", "Login")]
+        [AllureTag("Smoke Test", "API")]
         public void ApiGetProjects()
-        {
-            const string endpoint = "/index.php?/api/v2/get_project/1";
-
-            Authenticate();
-
-            var request = new RestRequest(endpoint);
-            var response = client.ExecuteGet(request);
-
-            logger.Info(response.Content);
-            Assert.That(response.StatusCode == HttpStatusCode.OK);
-
+        {          
+            ApiUserStep.ApiGetProject();
+            logger.Info("Expected" + _projectData);
+            
+        Assert.That(projectData.Equals(_projectData));
+          
         }
     }
 }

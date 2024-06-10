@@ -8,11 +8,13 @@ namespace TestRail.Steps.UI
     {
         private IWebDriver _driver;  
         private LoginPage loginPage;
+        private ProjectsPage projectsPage;
 
         public UserStep(IWebDriver driver):base(driver)
         { 
             _driver = driver;
             loginPage = new LoginPage(driver);
+            projectsPage = new ProjectsPage(driver);
         }
        
             public void Login(string UserName = "", string Password = "")
@@ -43,6 +45,14 @@ namespace TestRail.Steps.UI
         {
             Login("", "");
             return loginPage;
+        }
+
+        public ProjectsPage DeleteProject() 
+        {
+            projectsPage.ClickDeleteButton();    
+            projectsPage.EnableDeleteCheckbox();
+            projectsPage.ClickConfirmButton();
+            return projectsPage;
         }
     }
     

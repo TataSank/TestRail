@@ -1,7 +1,6 @@
 ﻿using Allure.Net.Commons;
 using Allure.NUnit.Attributes;
 using NLog;
-using OpenQA.Selenium;
 using TestRail.Helper;
 using TestRail.Pages;
 
@@ -12,7 +11,7 @@ namespace TestRail.Tests
 
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        private static LoginPage loginPage;
+       private static LoginPage loginPage;
         [SetUp]
         public void SetUp()
         { 
@@ -26,7 +25,8 @@ namespace TestRail.Tests
         [AllureStep("User has successfully logged in")]
         public void LoginPositiveTest()
 
-        {                     
+        {
+            Navigation.NavigationLoginStep();
             UserStep.SuccessfullLogin(Configurator.ReadConfiguration().UserName, Configurator.ReadConfiguration().Password);
         }
 
@@ -39,6 +39,7 @@ namespace TestRail.Tests
         {
            
             var expectedErrorMessage = "Password is required.";
+            Navigation.NavigationLoginStep();
             UserStep.UnsuccessfullLoginWithoutPassword(Configurator.ReadConfiguration().UserName);
 
             var actualErrorMessage = loginPage.GetPasswordEmptyErrorMessage();        
@@ -54,6 +55,7 @@ namespace TestRail.Tests
         {
             
             var expectedErrorMessage = "Email/Login is required.";
+            Navigation.NavigationLoginStep();
             UserStep.UnsuccessfullLoginWithoutUsername(Configurator.ReadConfiguration().Password);
 
             var actualErrorMessage = loginPage.GetUsernameEmptyErrorMessage();
@@ -71,6 +73,7 @@ namespace TestRail.Tests
             var expectedUserNameErrorMessage = "Email/Login is required.";
             var expectedPasswordErrorMessage = "Password is required.";
 
+            Navigation.NavigationLoginStep();
             UserStep.UnsuccessfullLoginWithoutPasswordAndUserNmae();
 
             var actualErrorMessage = loginPage.GetLoginErrorMessage();
@@ -80,10 +83,6 @@ namespace TestRail.Tests
                 Assert.That(actualErrorMessage, Does.Contain(expectedUserNameErrorMessage));
                 Assert.That(actualErrorMessage, Does.Contain(expectedPasswordErrorMessage));
             });
-                
-            
         }
-
     }
-
 }
